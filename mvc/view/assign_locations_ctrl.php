@@ -14,7 +14,8 @@ class AssignLocationsCtrl extends CHtmlElement
         $table = new CHtmlTable(array('cellpadding'=>'3'));
         $this->add_inner($table);
 
-        $table->add_row(array('Available locations', '&nbsp;', 'Assigned locations'),
+        $label = Location::label()->lower(true);
+        $table->add_row(array("Available {$label}", '&nbsp;', "Assigned {$label}"),
             array('style'=>'padding-bottom:0px;', 'align'=>'center'));
         
         // This element holds ids of assigned locations
@@ -23,7 +24,7 @@ class AssignLocationsCtrl extends CHtmlElement
         $elid_hidden = $el->get_id(true);
         $this->add_inner($el);
         
-        $attrs = array('size'=>'5', 'style'=>'width:170px;height:7em;overflow-x:auto;');
+        $attrs = array('size'=>'5', 'style'=>'width:170px;height:7em;overflow-x:auto;', 'title'=>ucwords($label));
         $ctrl_available = new CHtmlCbox('ctrl1', 0, $attrs);
         $ctrl_available->add_items($available_locations);
         $elid_available = $ctrl_available->get_id(true);

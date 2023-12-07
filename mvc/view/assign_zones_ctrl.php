@@ -14,9 +14,8 @@ class AssignZonesCtrl extends CHtmlElement
         $table = new CHtmlTable(array('cellpadding'=>'3'));
         $this->add_inner($table);
         
-        $label = Zone::label();
-        
-        $table->add_row(array("Available {$label->lower(true)}", '&nbsp;', "Assigned {$label->lower(true)}"),
+        $label = Zone::label()->lower(true);
+        $table->add_row(array("Available {$label}", '&nbsp;', "Assigned {$label}"),
             array('style'=>'padding-bottom:0px;', 'align'=>'center'));
         
         // This element holds ids of assigned zones
@@ -25,7 +24,7 @@ class AssignZonesCtrl extends CHtmlElement
         $elid_hidden = $el->get_id(true);
         $this->add_inner($el);
         
-        $attrs = array('size'=>'5', 'style'=>'width:170px;height:7em;overflow-x:auto;');
+        $attrs = array('size'=>'5', 'style'=>'width:170px;height:7em;overflow-x:auto;', 'title'=>ucwords($label));
         $ctrl_available = new CHtmlCbox('ctrl1', 0, $attrs);
         $ctrl_available->add_items($available_zones);
         $elid_available = $ctrl_available->get_id(true);

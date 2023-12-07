@@ -45,4 +45,12 @@ $__classes = array(
     'ServerAdmin'=>$__sudir.'/server_admin.php',
 );
 CAutoloader::register($__classes);
+
+$__sudir = $__dir.'/mvc/view';
+$__classes = array(
+    'AssignLocationsCtrl' => $__sudir . '/assign_locations_ctrl.php',
+    'AssignOperatorsCtrl' => $__sudir . '/assign_operators_ctrl.php',
+    'AssignZonesCtrl' => $__sudir . '/assign_zones_ctrl.php',
+);
+CAutoloader::register($__classes);
 ?>
