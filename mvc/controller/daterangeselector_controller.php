@@ -17,31 +17,73 @@ class DateRangeSelectorController extends SelectorController
     /** Returns array of instances */
     protected function get_items()
     {
-        $arr = array();
+        $show_days = $this->get_value('show_days');
+        $show_months = $this->get_value('show_months');
+        $show_years = $this->get_value('show_years');
+        $timespan = (int)$this->get_value('timespan');
         
+        if (!$show_days && !$show_months && !$show_years)
+        {
+            // Show months and years default
+            $show_months = true;
+            $show_years = true;
+        }
+        
+        // Make 3 years default
+        if ($timespan <= 0) $timespan = 94608000;
+        $ts_min = time() - $timespan;
+
         $ts = time();
         $year = date('Y', $ts);
         $month = date('n', $ts);
+        $day =  date('d', $ts);
         
-        $ts_to = time() + 3600;
-        $ts_from = $ts_to - 31 * 86400;
-        $range = "{$ts_from}-{$ts_to}";
-        $arr[$range] = 'Last month';
+        $arr = array();
         
-        for ($m = $month, $m_to = $month - 12; $m > $m_to; $m--)
+        if ($show_days)
         {
-            $ts_from = mktime(0, 0, 0, $m, 1, $year);
-            $ts_to = mktime(0, 0, 0, $m + 1, 1, $year) - 1;
+            $ts_to = time();
+            $ts_from = $ts_to - 86400;
             $range = "{$ts_from}-{$ts_to}";
-            $arr[$range] = date('F Y', $ts_from);
+            $arr[$range] = 'Last 24 hours';
+            
+            for ($d = $day, $d_to = $day - 7; $d > $d_to; $d--)
+            {
+                $ts_from = mktime(0, 0, 0, $month, $d, $year);
+                if ($ts_min > $ts_from) break;
+                $ts_to = mktime(0, 0, 0, $month, $d + 1, $year) - 1;
+                $range = "{$ts_from}-{$ts_to}";
+                $arr[$range] = date('D M j', $ts_from);
+            }
         }
         
-        for ($y = $year; $y > $year - 3; $y--)
+        if ($show_months)
         {
-            $ts_from = mktime(0, 0, 0, 1, 1, $y);
-            $ts_to = mktime(0, 0, 0, 1, 1, $y + 1) - 1;
+            $ts_to = time() + 3600;
+            $ts_from = $ts_to - 31 * 86400;
             $range = "{$ts_from}-{$ts_to}";
-            $arr[$range] = $y;
+            $arr[$range] = 'Last month';
+            
+            for ($m = $month, $m_to = $month - 12; $m > $m_to; $m--)
+            {
+                $ts_from = mktime(0, 0, 0, $m, 1, $year);
+                if ($ts_min > $ts_from) break;
+                $ts_to = mktime(0, 0, 0, $m + 1, 1, $year) - 1;
+                $range = "{$ts_from}-{$ts_to}";
+                $arr[$range] = date('F Y', $ts_from);
+            }
+        }
+        
+        if ($show_years)
+        {
+            for ($y = $year, $years = ceil($timespan / 31536000); $y > $year - $years; $y--)
+            {
+                $ts_from = mktime(0, 0, 0, 1, 1, $y);
+                //if ($ts_min > $ts_from) break;
+                $ts_to = mktime(0, 0, 0, 1, 1, $y + 1) - 1;
+                $range = "{$ts_from}-{$ts_to}";
+                $arr[$range] = $y;
+            }
         }
         
         return $arr;

@@ -5,5 +5,15 @@
 /** Date Range Selector Form */
 class DateRangeSelectorForm extends SelectorForm
 {
+    /** Initialize form contents */
+    protected function init_contents(array $args)
+    {
+        parent::init_contents($args);
+        
+        $this->add_inner(new CHtmlHidden('show_days', $show_days));
+        $this->add_inner(new CHtmlHidden('show_months', $show_months));
+        $this->add_inner(new CHtmlHidden('show_years', $show_years));
+        $this->add_inner(new CHtmlHidden('timespan', $timespan));
+    }
 }
 ?>
