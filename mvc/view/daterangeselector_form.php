@@ -9,6 +9,7 @@ class DateRangeSelectorForm extends SelectorForm
     protected function init_contents(array $args)
     {
         parent::init_contents($args);
+        @extract($args);
         
         $this->add_inner(new CHtmlHidden('show_days', $show_days));
         $this->add_inner(new CHtmlHidden('show_months', $show_months));
