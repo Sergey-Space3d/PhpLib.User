@@ -226,48 +226,6 @@ class OperatorAccess extends LoggableAccess
         return null;
     }
     
-    /** Get loggable's timezone */
-    public function get_timezone()
-    {
-        $tz = parent::get_timezone();
-        if ($tz) return $tz;
-        
-        if ($this->m_logged instanceof Operator)
-        {
-            $owner = new Owner($this->m_logged->get_owner_id());
-            
-            if ($owner->get_location_id())
-            {
-                // Get owner state
-                $location = new Location($owner->get_location_id());
-                $_SESSION['__loggedtimezone__'] = $location->get_state();
-                
-            }
-            else 
-            {
-                if (!$this->can(OperatorAccess::ACCESS_ALL_LOCATIONS))
-                {
-                    $locations = $this->get_locations($owner->get_id());
-                    
-                    if ($locations)
-                    {
-                        // Get location state
-                        $location = array_pop($locations);
-                        $_SESSION['__loggedtimezone__'] = $location->get_state();
-                    }
-                }
-            }
-        }
-        
-        if (!$_SESSION['__loggedtimezone__'])
-        {
-            // Set ET as default
-            $_SESSION['__loggedtimezone__'] = 'America/New_York';
-        }
-        
-        return $_SESSION['__loggedtimezone__'];
-    }
-    
     // Access ---------------------------------------------------------------
     
     /** Inquire if the operator can do the action */

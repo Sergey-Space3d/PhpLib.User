@@ -41,6 +41,10 @@ class EditOperatorForm extends FormLayout
         $this->add_control('Email', new CHtmlText('email', $email), true, true);
         $this->add_control('Phone', new CHtmlText('phone', $phone), true, false);
         
+        $ctrl_tz = new CHtmlCbox('timezone', $timezone);
+        $ctrl_tz->add_items($timezones);
+        $this->add_control('Time Zone', $ctrl_tz);
+        
         $ctrl = new CHtmlSubmit('Submit');
         $ctrl->disable_on_click();
         $this->add_control_deck($ctrl);

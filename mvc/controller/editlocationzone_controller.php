@@ -60,7 +60,7 @@ class EditLocationZoneController extends CController
         
         if ($assigned_ids)
         {
-            ZoneMan::Instance()->add_locations($assigned_ids, $id, true);
+            ZoneMan::Instance()->add_locations($assigned_ids, $id);
         }
 
         // This will force request update

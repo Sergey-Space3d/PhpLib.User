@@ -82,35 +82,9 @@ class ZoneMan extends CDbRecordManSingleton
 	}
 	
 	/** Add locations to the zone (args may be id, instance, or array) */
-	public function add_locations($zones, $locations, $set_timezone = false)
+	public function add_locations($zones, $locations)
 	{
 	    $this->location_map->map($zones, $locations);
-	    
-	    if ($set_timezone)
-	    {
-	        if (!is_array($locations)) $locations = array($locations);
-	        $states = array();
-	        
-	        foreach ($locations as $location)
-	        {
-	            if (!($location instanceof Location)) $location = new Location($location);
-	            $state = $location->get_state();
-	            if ($state) $states[$state] = $state;
-	        }
-	        
-	        if (count($states) == 1)
-	        {
-	            if (!is_array($zones)) $zones = array($zones);
-	            $state = current($states);
-	            
-	            foreach ($zones as $zone)
-	            {
-	                if (!($zone instanceof Zone)) $zone = new Zone($zone);
-	                $timezone = TimeZone::get_timezone_by_state($state);
-	                if ($zone->get_timezone() != $timezone) $zone->set_timezone($timezone, true);
-	            }
-	        }
-	    }
 	}
 	
 	/** Remove locations from the zone (locations may be id, instance, or array) */

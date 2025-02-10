@@ -126,18 +126,6 @@ class EditLocationController extends CController
         
         if ($id == 0)
         {
-            if ($id_zone != 0)
-            {
-                $zone = new Zone($id_zone);
-                $timezone = TimeZone::get_timezone_by_state($location->get_state());
-                
-                if ($zone->get_timezone() != $timezone)
-                {
-                    // Update timezone
-                    $zone->set_timezone($timezone, true);
-                }
-            }
-            
             // Reset the selector
             CHtmlForm::set_value(SELECTOR_LOCATION_ID, $location->get_id(), true);
         }

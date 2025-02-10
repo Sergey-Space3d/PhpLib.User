@@ -62,15 +62,6 @@ class EditZoneLocationController extends CController
         if ($assigned_ids)
         {
             ZoneMan::Instance()->add_locations($id, $assigned_ids);
-            
-            $location = new Location(current($assigned_ids));
-            $timezone = TimeZone::get_timezone_by_state($location->get_state());
-            
-            if ($zone->get_timezone() != $timezone)
-            {
-                // Update timezone
-                $zone->set_timezone($timezone, true);
-            }
         }
         
         $label = Zone::label();

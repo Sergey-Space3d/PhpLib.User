@@ -11,7 +11,8 @@ abstract class Contact extends Loggable
     'middle_name'=>'varchar(64)',
     'last_name'=>'varchar(64)',
 	'email'=>'varchar(64)',
-	'phone'=>'varchar(20)');
+    'phone'=>'varchar(20)',
+    'timezone'=>'varchar(32)');
 	
 	const AGREED_WITH_SERVICE = 0x100000;
 	const CHANGE_PASSWORD     = 0x200000;
@@ -80,6 +81,7 @@ abstract class Contact extends Loggable
 	public function get_last_name() { return $this->m_fields['last_name']; }
 	public function get_email() { return $this->m_fields['email']; }
 	public function get_phone() { return $this->m_fields['phone']; }
+	public function get_timezone() { return $this->m_fields['timezone']; }
 	
 	// Setters --------------------------------------------------------------
 	
@@ -89,5 +91,6 @@ abstract class Contact extends Loggable
 	public function set_last_name($arg, $save = false) { $this->set_field('last_name', $arg, $save); }
 	public function set_email($arg, $save = false) { $this->set_field('email', $arg, $save); }
 	public function set_phone($arg, $save = false) { $this->set_field('phone', self::normalize_phone($arg), $save); }
+	public function set_timezone($arg, $save = false) { $this->set_field('timezone', $arg, $save); }
 }
 ?>

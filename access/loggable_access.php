@@ -161,10 +161,32 @@ abstract class LoggableAccess
     {
         if (!$_SESSION['__loggedtimezone__'])
         {
-            if (($this->m_logged instanceof Contact) && $this->m_logged->get_location_id())
+            if ($this->m_logged instanceof Contact)
             {
-                $location = new Location($this->m_logged->get_location_id());
-                $_SESSION['__loggedtimezone__'] = $location->get_state();
+                if ($this->m_logged->get_timezone())
+                {
+                    // The contact is assigned the timezone
+                    $_SESSION['__loggedtimezone__'] = $this->m_logged->get_timezone();
+                }
+                else if ($this->m_logged->get_location_id())
+                {
+                    // Get timezone by location
+                    $location = new Location($this->m_logged->get_location_id());
+                    $_SESSION['__loggedtimezone__'] = TimeZone::get_timezone_by_location(
+                        $location->get_country(), $location->get_state(), $location->get_city());
+                }
+            }
+            
+            if (!$_SESSION['__loggedtimezone__'])
+            {
+                // Get timezone by IP
+                $_SESSION['__loggedtimezone__'] = TimeZone::get_timezone_by_ip($_SERVER['REMOTE_ADDR']);
+            }
+            
+            if (!$_SESSION['__loggedtimezone__'])
+            {
+                // Set UTC as default
+                $_SESSION['__loggedtimezone__'] = TimeZone::$DefTimezone;
             }
         }
         

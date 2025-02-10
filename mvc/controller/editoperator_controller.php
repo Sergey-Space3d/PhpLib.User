@@ -16,7 +16,8 @@ class EditOperatorController extends CController
         $this->set_arg('email', $this->choose_value($operator->get_email(), 'email'));
         $this->set_arg('phone', $this->choose_value($operator->get_phone(), 'phone'));
         
-        // Set owner fields
+        // Set owner fields -------------------------------------------------
+        
         $id_owner = $id ? $operator->get_owner_id() : $this->get_arg('id_owner');
         
         if ($id_owner)
@@ -25,7 +26,24 @@ class EditOperatorController extends CController
             $this->set_arg('owner_name', $owner->get_name()); // read-only
         }
         
-        // Access levels
+        // Choose timezone --------------------------------------------------
+        
+        $timezones = array(
+        'None'=>'None',
+        'America/New_York'=>'America/New_York',
+        'America/Chicago'=>'America/Chicago',
+        'America/Denver'=>'America/Denver',
+        'America/Los_Angeles'=>'America/Los_Angeles',
+        'America/Anchorage'=>'America/Anchorage',
+        'UTC'=>'Universal Time');
+        
+        $timezone = $this->choose_value($operator->get_timezone(), 'timezone');
+        if (!$timezone) $timezone = 'None';
+        
+        $this->set_arg('timezone', $timezone);
+        $this->set_arg('timezones', $timezones);
+        
+        // Access levels ----------------------------------------------------
         
         static $levels = null;
         if ($levels === null) $levels = LoggableAccess::Instance()->get_access_levels();
@@ -57,6 +75,7 @@ class EditOperatorController extends CController
         $email = $this->get_value('email');
         $phone = $this->get_value('phone');
         $login = $this->get_value('email');
+        $timezone = $this->get_value('timezone');
         $level = $this->get_value('level');
         
         $id_owner = $this->get_value('id_owner');
@@ -110,6 +129,7 @@ class EditOperatorController extends CController
         $operator->set_email($email);
         $operator->set_phone(UserFieldValidator::normalize_phone($phone));
         $operator->set_login($login);
+        $operator->set_timezone($timezone == 'None' ? '' : $timezone);
         
         if ($is_new)
         {

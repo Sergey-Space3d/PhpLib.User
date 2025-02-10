@@ -57,11 +57,6 @@ class EditZoneController extends CController
         $zone->set_name($name);
         $zone->set_external_id($external_id);
         
-        if (!$id)
-        {
-            $zone->set_timezone(TimeZone::$DefTimezone);
-        }
-        
         if (!ServerAdmin::Instance()->edit_zone($zone))
         {
             $action = $id ? 'update' : 'add';
