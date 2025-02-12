@@ -28,15 +28,7 @@ class EditOperatorController extends CController
         
         // Choose timezone --------------------------------------------------
         
-        $timezones = array(
-        'None'=>'None',
-        'America/New_York'=>'America/New_York',
-        'America/Chicago'=>'America/Chicago',
-        'America/Denver'=>'America/Denver',
-        'America/Los_Angeles'=>'America/Los_Angeles',
-        'America/Anchorage'=>'America/Anchorage',
-        'UTC'=>'Universal Time');
-        
+        $timezones = array('None'=>'Current Location') + TimeZone::get_timezones();
         $timezone = $this->choose_value($operator->get_timezone(), 'timezone');
         if (!$timezone) $timezone = 'None';
         
