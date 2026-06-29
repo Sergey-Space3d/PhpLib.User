@@ -1,4 +1,7 @@
 <?php
+// Copyright 2005-2026 Sergey Shustov.
+// License: GPL v2.  See License.txt.
+
 define('SELECTOR_OWNER_ID', 'sel_id_owner');
 define('SELECTOR_LOCATION_ID', 'sel_id_location');
 define('SELECTOR_ZONE_ID', 'sel_id_zone');
