@@ -25,7 +25,7 @@ class EditLocationController extends CController
         $this->set_arg('longitude', $this->choose_value($location->get_longitude(), 'longitude'));
         
         // TODO: for now, the only valid country is US
-        $this->set_arg('states', Geo::get_states('US'));
+        $this->set_arg('states', Geo::get_regions('US'));
         $this->set_arg('countries', array('US'=>'United States'));
         
         // Set owner fields
