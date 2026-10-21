@@ -34,6 +34,7 @@ abstract class Contact extends Loggable
 	/** Called when writing new record to the database */
 	protected function on_write_new() 
 	{
+	    parent::on_write_new();
 	    $this->field_to_int('location_id');
 	}
 	
