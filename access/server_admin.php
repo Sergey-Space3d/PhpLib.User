@@ -34,7 +34,15 @@ class ServerAdmin
 	/** Modify operator */
 	public function edit_operator(Operator $operator)
 	{
-		return $operator->write();
+	    try 
+	    {
+	        return $operator->write();
+	    } 
+	    catch (Exception $e) 
+	    {
+	        self::set_last_error($e->getMessage());
+	        return false;
+	    }
 	}
 	
 	/** Block/unblock the operator */
@@ -61,20 +69,28 @@ class ServerAdmin
 	/** Modify operator group. Returns success state */
 	public function edit_operator_group(OperatorGroup $group, array $operator_ids = null, array $zone_ids = null)
 	{
-	    if (!OperatorGroupMan::Instance()->is_duplicate($group)) 
+	    try
 	    {
-	        $id = $group->write();
-	        
-	        if ($id)
+	        if (!OperatorGroupMan::Instance()->is_duplicate($group))
 	        {
-	            OperatorGroupMan::Instance()->clear($id);
-	            if ($operator_ids) OperatorGroupMan::Instance()->add_operators($id, $operator_ids);
-	            if ($zone_ids) ZoneMan::Instance()->add_operator_groups($zone_ids, $id);
-	            return true;
+	            $id = $group->write();
+	            
+	            if ($id)
+	            {
+	                OperatorGroupMan::Instance()->clear($id);
+	                if ($operator_ids) OperatorGroupMan::Instance()->add_operators($id, $operator_ids);
+	                if ($zone_ids) ZoneMan::Instance()->add_operator_groups($zone_ids, $id);
+	                return true;
+	            }
 	        }
+	        
+	        return false;
 	    }
-	    
-	    return false;
+	    catch (Exception $e)
+	    {
+	        self::set_last_error($e->getMessage());
+	        return false;
+	    }
 	}
 	
 	/** Delete operator group. Returns success state */
@@ -88,7 +104,15 @@ class ServerAdmin
 	/** Modify owner */
 	public function edit_owner(Owner $owner)
 	{
-		return $owner->write();
+	    try
+	    {
+    	    return $owner->write();
+	    }
+	    catch (Exception $e)
+	    {
+	        self::set_last_error($e->getMessage());
+	        return false;
+	    }
 	}
 	
 	/** Block/unblock the owner */
@@ -118,10 +142,18 @@ class ServerAdmin
 	/** Modify location */
 	public function edit_location(Location $location, $zone_id = 0)
 	{
-	    $is_new = !$location->get_id();
-	    $id = $location->write();
-	    if ($is_new && $zone_id) ZoneMan::Instance()->add_locations($zone_id, $id);
-	    return $id;
+	    try
+	    {
+    	    $is_new = !$location->get_id();
+    	    $id = $location->write();
+    	    if ($is_new && $zone_id) ZoneMan::Instance()->add_locations($zone_id, $id);
+    	    return $id;
+	    }
+	    catch (Exception $e)
+	    {
+	        self::set_last_error($e->getMessage());
+	        return false;
+	    }
 	}
 	
 	/** Block/unblock the location */
@@ -151,7 +183,15 @@ class ServerAdmin
 	/** Modify zone */
 	public function edit_zone(Zone $zone)
 	{
-		return $zone->write();
+	    try
+	    {
+    	    return $zone->write();
+	    }
+	    catch (Exception $e)
+	    {
+	        self::set_last_error($e->getMessage());
+	        return false;
+	    }
 	}
 	
 	/** Block/unblock the zone */
